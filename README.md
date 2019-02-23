@@ -1,6 +1,6 @@
 # Creating Ansible Hosts #
 
-From AWS EC2 Dashboard, create 4 ec2 instanes:
+From AWS EC2 Dashboard, create 4 ec2 instanes. You can create one configuration and deploy it 4 times:
 
 * Control Host
 * Web Server
@@ -10,6 +10,8 @@ From AWS EC2 Dashboard, create 4 ec2 instanes:
 ## EC2 Server Settings ##
 
 * AMI: Amazon Linux AMI 2018.03.0 (HVM), SSD Volume Type  (yum based package manager)
+    * Make sure to enable epel repo to allow installation of ansible
+    * `sudo yum-config-manager --enable epel`
 * Size: T2-Micro
 * 16GB EBS Volume
 
