@@ -58,6 +58,7 @@
     - name: save iptables
       command: service iptables save
       become: yes
+      notify: reload iptables
 
     - name: reload iptables
       service:

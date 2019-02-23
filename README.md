@@ -17,12 +17,13 @@ From AWS EC2 Dashboard, create 4 ec2 instanes. You can create one configuration 
 
 ## Security Groups ##
 
-| Type | Protocol | Port Range | Source            | Description     |
-| ---- | -------- | ---------- | ----------------- | --------------- |
-| SSH  | TCP      | 22         | 116.240.45.203/32 | Home IP         |
-| SSH  | TCP      | 22         | 52.62.189.139/32  | Control Public  |
-| SSH  | TCP      | 22         | 172.31.4.102/32   | Control Private |
-
+| Type  | Protocol | Port Range | Source            | Description     |
+| ----- | -------- | ---------- | ----------------- | --------------- |
+| SSH   | TCP      | 22         | 116.240.45.203/32 | Home IP         |
+| SSH   | TCP      | 22         | 52.62.189.139/32  | Control Public  |
+| SSH   | TCP      | 22         | 172.31.4.102/32   | Control Private |
+| HTTP  | TCP      | 80         | 116.240.45.203/32 | HTTP Access     |
+| HTTPS | TCP      | 443        | 116.240.45.203/32 | HTTPS Access    |
 
 # Configuring ansible.cfg #
 
