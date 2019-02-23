@@ -26,3 +26,8 @@
         update_cache: yes
 
       
+    - name: ensure nginx has started
+      service:
+        name: nginx
+        state: started
+        enabled: yes # Whether the service should start on boot
