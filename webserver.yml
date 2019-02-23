@@ -49,6 +49,22 @@
         state: started
         enabled: yes
 
+
+    - name: copy demo app source
+      copy:
+        src: demo/app/ # copy app/ folder with all contents
+        dest: /var/www/demo
+        mode: 0755
+      notify: restart httpd
+
+
+    - name: copy apache virtual host config
+      copy:
+        src: demo/demo.conf
+        dest: /etc/httpd/sites-available # will create if not exists
+        mode: 0755
+      notify: restart httpd
+
   handlers:
     - name: restart httpd
       service:
