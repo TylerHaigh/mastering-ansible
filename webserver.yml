@@ -65,6 +65,13 @@
         mode: 0755
       notify: restart httpd
 
+
+    - name: setup python virtual environment
+      pip:
+        requirements: /var/www/demo/requirements.txt
+        virtualenv: /var/www/demo/.venv
+      notify: restart httpd
+
   handlers:
     - name: restart httpd
       service:
