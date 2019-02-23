@@ -19,3 +19,9 @@
         name: mysql-community-server
         state: present
         update_cache: yes
+
+    - name: ensure mysql started
+      service:
+        name: mysqld
+        state: started
+        enabled: yes

@@ -1,7 +1,14 @@
 ---
 
 - hosts: loadbalancer, webserver, database
+  become: yes
+  
   tasks:
     - name: update yum
       command: yum update -y
-      become: yes
+
+    - name: install banner
+      yum:
+        name: figlet
+        state: present
+        update_cache: yes
