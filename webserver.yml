@@ -10,16 +10,22 @@
     #     update_cache: yes
     #   # notify: restart httpd
 
+
+    # in order to install mod_wsgi, you need to install httpd-devel
+    # i dont think the app is using python34. could possibly be removed...
     - name: install apache
       yum:
-        name: [ "httpd", "mod_wsgi", "python34", "python-pip" ]
+        name: [ "httpd", "httpd-devel", "python34", "python-pip" ]
         state: present
         update_cache: yes
       notify: restart httpd
 
+      # need to install mod_wsgi via pip because the one that comes by default with yum is python 2.6
+      # which doesn't support dist comprehension (you'll get an invalid syntax from some command within the Flask module)
+
     - name: install virtualenv
       pip:
-        name: virtualenv
+        name: [ "virtualenv", "mod_wsgi" ]
         state: present
 
     - name: open firewall ports
@@ -57,11 +63,19 @@
         mode: 0755
       notify: restart httpd
 
-
+    # see https://github.com/GrahamDumpleton/mod_wsgi
+    # for how I generated this config via `mod_wsgi-express module-config`
     - name: copy apache virtual host config
       copy:
         src: demo/demo.conf
-        dest: /etc/httpd/sites-available # will create if not exists
+        dest: /etc/httpd/conf.d/
+        mode: 0755
+      notify: restart httpd
+
+    - name: copy apache wsgi config
+      copy:
+        src: demo/wsgi.conf
+        dest: /etc/httpd/conf.d/
         mode: 0755
       notify: restart httpd
 
@@ -69,8 +83,10 @@
     - name: setup python virtual environment
       pip:
         requirements: /var/www/demo/requirements.txt
-        virtualenv: /var/www/demo/.venv
+        virtualenv:   /var/www/demo/venv27
+        virtualenv_python: python2.7
       notify: restart httpd
+
 
   handlers:
     - name: restart httpd
