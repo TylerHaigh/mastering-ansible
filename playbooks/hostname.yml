@@ -1,0 +1,6 @@
+---
+
+  # Sets the target for the playbook
+  - hosts: all
+    tasks:
+      - command: hostname

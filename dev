@@ -13,4 +13,5 @@ Ansible-DatabaseServer
 
 [control]
 ; ec2-52-62-189-139.ap-southeast-2.compute.amazonaws.com ansible_connection=local
+; Ansible-ControlHost
 127.0.0.1 ansible_connection=local

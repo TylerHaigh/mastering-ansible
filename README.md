@@ -1,3 +1,27 @@
+# Creating Ansible Hosts #
+
+From AWS EC2 Dashboard, create 4 ec2 instanes:
+
+* Control Host
+* Web Server
+* Load Balancer
+* Database
+
+## EC2 Server Settings ##
+
+* AMI: Amazon Linux AMI 2018.03.0 (HVM), SSD Volume Type  (yum based package manager)
+* Size: T2-Micro
+* 16GB EBS Volume
+
+## Security Groups ##
+
+| Type | Protocol | Port Range | Source            | Description     |
+| ---- | -------- | ---------- | ----------------- | --------------- |
+| SSH  | TCP      | 22         | 116.240.45.203/32 | Home IP         |
+| SSH  | TCP      | 22         | 52.62.189.139/32  | Control Public  |
+| SSH  | TCP      | 22         | 172.31.4.102/32   | Control Private |
+
+
 # Configuring ansible.cfg #
 
 When running from windows subsystem, you may get the following error:
