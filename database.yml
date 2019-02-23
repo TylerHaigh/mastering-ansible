@@ -1,7 +1,7 @@
 ---
 
 - hosts: database
-
+  become: true
   tasks:
 
     - name: download mysql server rpm package

@@ -1,5 +1,6 @@
 ---
 
+# Load balancer group from dev hosts file
 - hosts: loadbalancer
 
   # Escalate permissions to use root
