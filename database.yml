@@ -1,0 +1,21 @@
+---
+
+- hosts: database
+
+  tasks:
+
+    - name: download mysql server rpm package
+      yum:
+        name: https://dev.mysql.com/get/mysql80-community-release-el6-2.noarch.rpm
+      become: yes
+
+
+    - name: confirm rpm package was added
+      command: yum repolist all | grep mysql
+
+    
+    - name: install mysql server
+      yum:
+        name: mysql-community-server
+        state: present
+        update_cache: yes

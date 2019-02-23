@@ -1,0 +1,7 @@
+---
+
+- hosts: loadbalancer, webserver, database
+  tasks:
+    - name: update yum
+      command: yum update -y
+      become: yes
