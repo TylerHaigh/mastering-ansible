@@ -1,0 +1,16 @@
+[loadbalancer]
+; See ~/.ssh/config file for how hosts are registered
+; ec2-52-62-146-197.ap-southeast-2.compute.amazonaws.com
+Ansible-LoadBalancer
+
+[webserver]
+; ec2-13-54-118-204.ap-southeast-2.compute.amazonaws.com
+Ansible-WebServer
+
+[database]
+; ec2-13-239-135-130.ap-southeast-2.compute.amazonaws.com
+Ansible-DatabaseServer
+
+[control]
+; ec2-52-62-189-139.ap-southeast-2.compute.amazonaws.com ansible_connection=local
+127.0.0.1 ansible_connection=local
