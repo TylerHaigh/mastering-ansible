@@ -28,6 +28,33 @@ resource "aws_vpc" "ansible_vpc" {
   }
 }
 
+
+# Internet Gateway
+
+resource "aws_internet_gateway" "ansible_internet_gateway" {
+  vpc_id = "${aws_vpc.ansible_vpc.id}"
+  tags {
+      Name = "ansible_internet_gateway"
+    }
+}
+
+# Route Tables for IG
+
+resource "aws_route_table" "ansible_ig_route_table" {
+  vpc_id = "${aws_vpc.ansible_vpc.id}"
+  route {
+      cidr_block = "0.0.0.0/0"
+      gateway_id = "${aws_internet_gateway.ansible_internet_gateway.id}"
+    }
+  tags {
+      Name = "Ansible IG Route Table"
+    }
+}
+resource "aws_route_table_association" "subnet_association" {
+  subnet_id      = "${aws_subnet.az_a.id}"
+  route_table_id = "${aws_route_table.ansible_ig_route_table.id}"
+}
+
 # Subnets
 # See http://blog.itsjustcode.net/blog/2017/11/18/terraform-cidrsubnet-deconstructed/ for a good writeup on
 # how to split your VPC into subnets
@@ -57,14 +84,12 @@ resource "aws_subnet" "az_b" {
 # Provides an EC2 key pair resource. A key pair is used to control login access to EC2 instances.
 # Currently this resource requires an existing user-supplied key pair.
 # This key pair's public key will be registered with AWS to allow logging-in to EC2 instances.
-# variable "ec2_key_pair_public_key_material" {
-#   description = "Public Key material to create an EC2 Key Pair"
-# }
 
-resource "aws_key_pair" "ssh_key_access" {
-  key_name = "AnsibleHost_v2"
-  public_key = "${file("keys/AnsibleHost.pem.pub")}"
-}
+# You'll need to upload this manually to AWS. See README.md file
+# resource "aws_key_pair" "ssh_key_access" {
+#   key_name = "AnsibleHost_v2"
+#   public_key = "${file("keys/AnsibleHost.pem.pub")}"
+# }
 
 
 # Security Group to be applied to all EC2 Instances
@@ -81,6 +106,9 @@ resource "aws_security_group" "ansible_security_group" {
   tags {
     Name = "Ansible Security Group"
   }
+
+  # 116.240.45.203
+  # chomp(data.http.myip.body)
 
   ingress {
     description = "SSH from Home IP"
@@ -114,14 +142,6 @@ resource "aws_security_group" "ansible_security_group" {
     cidr_blocks = [ "${aws_vpc.ansible_vpc.cidr_block}" ]
   }
 
-  # ingress {
-  #   description = "SSH from Control Host Private IP"
-  #   from_port = 22
-  #   to_port = 22
-  #   protocol = "tcp"
-  #   cidr_blocks = [ "${aws_instance.control_host.private_ip}" ]
-  # }
-
   egress {
     from_port = 0
     to_port = 0
@@ -138,7 +158,7 @@ resource "aws_instance" "control_host" {
   availability_zone = "ap-southeast-2a"
   subnet_id = "${aws_subnet.az_a.id}"
   instance_type = "t2.micro"
-  key_name = "${aws_key_pair.ssh_key_access.key_name}"
+  key_name = "AnsibleHost"
   associate_public_ip_address = true
 
   security_groups = [ "${aws_security_group.ansible_security_group.id}" ]
@@ -160,7 +180,7 @@ resource "aws_instance" "web_server" {
   availability_zone = "ap-southeast-2a"
   subnet_id = "${aws_subnet.az_a.id}"
   instance_type = "t2.micro"
-  key_name = "${aws_key_pair.ssh_key_access.key_name}"
+  key_name = "AnsibleHost"
   associate_public_ip_address = true
 
   root_block_device {
@@ -182,7 +202,7 @@ resource "aws_instance" "load_balancer" {
   availability_zone = "ap-southeast-2a"
   subnet_id = "${aws_subnet.az_a.id}"
   instance_type = "t2.micro"
-  key_name = "${aws_key_pair.ssh_key_access.key_name}"
+  key_name = "AnsibleHost"
   associate_public_ip_address = true
 
   root_block_device {
@@ -204,7 +224,7 @@ resource "aws_instance" "database" {
   availability_zone = "ap-southeast-2a"
   subnet_id = "${aws_subnet.az_a.id}"
   instance_type = "t2.micro"
-  key_name = "${aws_key_pair.ssh_key_access.key_name}"
+  key_name = "AnsibleHost"
   associate_public_ip_address = true
 
   root_block_device {

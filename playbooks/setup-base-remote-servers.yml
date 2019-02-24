@@ -1,0 +1,29 @@
+---
+
+- hosts: loadbalancer, webserver, database
+  become: yes
+  
+  tasks:
+    - name: update yum
+      command: yum update -y
+
+    - name: install banner
+      yum:
+        name: figlet
+        state: present
+        update_cache: yes
+
+- hosts: loadbalancer
+  tasks:
+    - name: put server name into file
+      shell: echo 'Load Balancer' > ~/LoadBalancer.txt
+
+- hosts: webserver
+  tasks:
+    - name: put server name into file
+      shell: echo 'Web Server' > ~/WebServer.txt
+
+- hosts: database
+  tasks:
+    - name: put server name into file
+      shell: echo 'Database' > ~/Database.txt
