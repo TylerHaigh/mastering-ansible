@@ -1,1 +1,7 @@
 *.retry
+.terraform/
+*.tfstate*
+terraform/keys/*
+!terraform/keys/.gitkeep
+secrets.auto.tfvars
+.vscode/
