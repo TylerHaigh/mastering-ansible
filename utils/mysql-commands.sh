@@ -16,8 +16,11 @@ mysql> DROP USER 'tyler'@'localhost' ;
 mysql> SET GLOBAL validate_password.policy = 0; 
 mysql> SHOW VARIABLES LIKE 'validate_password.%';
 mysql> Create USER 'tyler'@'localhost' IDENTIFIED WITH mysql_native_password BY 'tylerlocalhost';
+mysql> Create USER 'tyler'@'192.168.60.4' IDENTIFIED WITH mysql_native_password BY 'tylerlocalhost';
 
 mysql> GRANT ALL PRIVILEGES ON *.* TO 'tyler'@'localhost';
+mysql> GRANT ALL PRIVILEGES ON *.* TO 'tyler'@'192.168.60.4';
+
 mysql> flush privileges;
 mysql> quit
 

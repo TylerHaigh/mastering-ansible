@@ -24,8 +24,15 @@
     - name: install virtualenv
       pip:
         executable: pip3
-        name: [ "virtualenv", "mod_wsgi", "mysqlclient" ]
+        name: [ "virtualenv", "mod_wsgi", "mysqlclient", "pymysql", "cryptography" ]
         state: present
+
+    # https://stackoverflow.com/a/22693233/2442468
+    - name: allow apache mod_wsgi to connect to databases
+      shell: setenforce 0 && setsebool -P httpd_can_network_connect_db 1 && echo done > /opt/mod_wsgi_enabled
+      args:
+        creates: /opt/mod_wsgi_enabled
+      notify: restart httpd
 
     - name: open firewall ports
       iptables:
