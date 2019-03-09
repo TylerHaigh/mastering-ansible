@@ -1,2 +1,7 @@
 ---
 # tasks file for control
+- name: install dev tools
+  apt:
+    name: curl
+    state: present
+    update_cache: yes
