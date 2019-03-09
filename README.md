@@ -104,3 +104,18 @@ ssh -i ~/.vagrant.d/insecure_private_key vagrant@192.168.60.4
 ssh -i ~/.vagrant.d/insecure_private_key vagrant@192.168.60.6
 ssh -i ~/.vagrant.d/insecure_private_key vagrant@192.168.60.7
 ```
+
+# Stubbing roles #
+
+You can stub out roles by running the following command
+
+```
+mkdir roles
+cd roles
+
+ansible-galaxy init control
+ansible-galaxy init nginx
+ansible-galaxy init apache
+ansible-galaxy init demo_app
+ansible-galaxy init mysql
+```
