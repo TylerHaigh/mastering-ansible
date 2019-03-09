@@ -13,6 +13,9 @@
         state: present
         update_cache: yes
 
+    - name: enable epel repo
+      shell: yum-config-manager --enable epel
+
 - hosts: loadbalancer
   tasks:
     - name: put server name into file

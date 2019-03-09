@@ -80,6 +80,14 @@ resource "aws_security_group" "ansible_security_group" {
     cidr_blocks = [ "${aws_vpc.ansible_vpc.cidr_block}" ]
   }
 
+  ingress {
+    description = "MySql for Internal IPs"
+    from_port = 3306
+    to_port = 3306
+    protocol = "tcp"
+    cidr_blocks = [ "${aws_vpc.ansible_vpc.cidr_block}" ]
+  }
+
   egress {
     from_port = 0
     to_port = 0

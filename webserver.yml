@@ -15,7 +15,7 @@
     # i dont think the app is using python34. could possibly be removed...
     - name: install apache
       yum:
-        name: [ "httpd", "httpd-devel", "python34", "python-pip", "gcc", "python-devel" ]
+        name: [ "httpd", "httpd-devel", "python34", "python-pip", "gcc", "python-devel", "mysql-devel", "MySQL-python" ]
         state: present
         update_cache: yes
       notify: restart httpd
