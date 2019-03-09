@@ -13,7 +13,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
-  config.vm.box = "centos/7"
+  config.vm.box = "centos/6"
   config.ssh.insert_key = false
   config.vm.synced_folder ".", "/vagrant", disabled: true
 

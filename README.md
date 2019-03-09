@@ -61,3 +61,33 @@ Vagrant will want to use VirtualBox by default. If you are running Windows 10 Pr
 2. RUn `bash` to enter the WSL
 
 Now Vagrant can use HyperV
+
+
+# Changing Vagrant VMs #
+
+If you destroy and recreate your Vagrant VMs, you may get the following message from Ansible
+
+```
+Failed to connect to the host via ssh:
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@    WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!     @
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!
+Someone could be eavesdropping on you right now (man-in-the-middle attack)!
+It is also possible that a host key has just been changed.
+The fingerprint for the RSA key sent by the remote host is
+SHA256:U/eNuEQIhYuL8cdFb1EUyKKceY5PlS32gJeHGJ0NKDU.
+Please contact your system administrator.
+Add correct host key in /home/your_user_name/.ssh/known_hosts to get rid of this message.
+Offending ECDSA key in /home/your_user_name/.ssh/known_hosts:19
+  remove with:
+  ssh-keygen -f "/home/your_user_name/.ssh/known_hosts" -R "192.168.60.6"
+RSA host key for 192.168.60.6 has changed and you have requested strict checking.
+Host key verification failed.
+```
+
+Run the prescribed command to remove it
+
+```
+ssh-keygen -f "/home/your_user_name/.ssh/known_hosts" -R "192.168.60.6"
+```

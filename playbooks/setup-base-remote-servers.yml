@@ -7,20 +7,29 @@
     - name: update yum
       command: yum update -y
 
-    - name: download epel
-      get_url:
-        url: http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-        dest: /tmp/epel-release-latest-7.noarch.rpm
-        force: yes
-
-        
+    # Install EPEL
     - name: install epel
       yum:
-        name: /tmp/epel-release-latest-7.noarch.rpm
+        name: epel-release
         state: present
 
     - name: enable epel repo
       shell: yum-config-manager --enable epel
+
+
+    # Install Python
+    - name: install python 3.4
+      yum:
+        name: [ "python34", "python34-setuptools" ]
+        state: present
+        update_cache: yes
+
+    # Install Pip
+    - name: install pip
+      easy_install:
+        executable: easy_install-3.4
+        name: pip
+        state: present
 
 
     - name: install banner
