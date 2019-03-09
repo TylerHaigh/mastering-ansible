@@ -11,11 +11,11 @@
     #     enablerepo: epel
     #     update_cache: yes
 
-    # - name: install tools
-    #   yum:
-    #     name: MySQL-python
-    #     state: present
-    #     update_cache: yes
+    - name: install tools
+      yum:
+        name: MySQL-python
+        state: present
+        update_cache: yes
 
     - name: download mysql server rpm package
       yum:
@@ -27,6 +27,7 @@
       command: yum repolist all | grep mysql
 
     
+    # installs mysql, mysqldump
     - name: install mysql server
       yum:
         name: mysql-community-server
@@ -39,32 +40,45 @@
         state: started
         enabled: yes
 
-    # - name: ensure mysql is listening on all ports
-    #   lineinfile:
-    #     dest: /etc/my.cnf
-    #     regexp: ^bind-address
-    #     line: "bind-address = 0.0.0.0"
-    #   notify: restart mysql
+    - name: ensure mysql is listening on all ports
+      lineinfile:
+        dest: /etc/my.cnf
+        regexp: ^bind-address
+        line: "bind-address = 0.0.0.0"
+      notify: restart mysql
 
+    # at this point, you need to manually log into the server and run the commands listed in ../utils/mysql-commands.sh
+    # to change the root mysql password
 
-    # - name: create demo database
-    #   mysql_db:
-    #     name: demo
-    #     state: present
-    #     login_user: root
-    #     login_password: ""
+    - name: configure nginx site
+      file:
+        path: /root/.my.cnf
+        state: absent
 
+    - name: create demo database
+      mysql_db:
+        name: demo
+        state: present
+        login_host: localhost
+        login_user: tyler
+        login_password: tylerlocalhost
+
+    # Broken: https://github.com/ansible/ansible/pull/52278
     # - name: create demo database user
     #   mysql_user:
     #     name: demo
-    #     password: demo
-    #     priv: demo.*:ALL
-    #     host: "%"
+    #     password: demolocalhost
+    #     priv: 'demo.*:ALL'
+    #     # host: localhost
     #     state: present
-
+    #     login_host: localhost
+    #     login_user: tyler
+    #     login_password: tylerlocalhost
 
   handlers:
     - name: restart mysql
       service:
         name: mysqld
         state: restarted
+
+
