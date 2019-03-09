@@ -6,3 +6,4 @@ terraform/keys/*
 secrets.auto.tfvars
 .vscode/
 .vagrant/
+ansible-retry/

@@ -78,10 +78,10 @@ It is also possible that a host key has just been changed.
 The fingerprint for the RSA key sent by the remote host is
 SHA256:U/eNuEQIhYuL8cdFb1EUyKKceY5PlS32gJeHGJ0NKDU.
 Please contact your system administrator.
-Add correct host key in /home/your_user_name/.ssh/known_hosts to get rid of this message.
-Offending ECDSA key in /home/your_user_name/.ssh/known_hosts:19
+Add correct host key in /home/tyler/.ssh/known_hosts to get rid of this message.
+Offending ECDSA key in /home/tyler/.ssh/known_hosts:19
   remove with:
-  ssh-keygen -f "/home/your_user_name/.ssh/known_hosts" -R "192.168.60.6"
+  ssh-keygen -f "/home/tyler/.ssh/known_hosts" -R "192.168.60.6"
 RSA host key for 192.168.60.6 has changed and you have requested strict checking.
 Host key verification failed.
 ```
@@ -89,7 +89,9 @@ Host key verification failed.
 Run the prescribed command to remove it
 
 ```
-ssh-keygen -f "/home/your_user_name/.ssh/known_hosts" -R "192.168.60.6"
+ssh-keygen -f "/home/tyler/.ssh/known_hosts" -R "192.168.60.4"
+ssh-keygen -f "/home/tyler/.ssh/known_hosts" -R "192.168.60.6"
+ssh-keygen -f "/home/tyler/.ssh/known_hosts" -R "192.168.60.7"
 ```
 
 # SSH Into Vagrant Machine #
@@ -98,5 +100,7 @@ Run the following command:
 
 ```
 # To ssh into 192.168.60.7 (Load Balancer)
+ssh -i ~/.vagrant.d/insecure_private_key vagrant@192.168.60.4
+ssh -i ~/.vagrant.d/insecure_private_key vagrant@192.168.60.6
 ssh -i ~/.vagrant.d/insecure_private_key vagrant@192.168.60.7
 ```
