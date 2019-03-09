@@ -7,14 +7,28 @@
     - name: update yum
       command: yum update -y
 
+    - name: download epel
+      get_url:
+        url: http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+        dest: /tmp/epel-release-latest-7.noarch.rpm
+        force: yes
+
+        
+    - name: install epel
+      yum:
+        name: /tmp/epel-release-latest-7.noarch.rpm
+        state: present
+
+    - name: enable epel repo
+      shell: yum-config-manager --enable epel
+
+
     - name: install banner
       yum:
         name: figlet
         state: present
         update_cache: yes
 
-    - name: enable epel repo
-      shell: yum-config-manager --enable epel
 
 - hosts: loadbalancer
   tasks:
