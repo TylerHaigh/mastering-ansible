@@ -5,3 +5,4 @@ terraform/keys/*
 !terraform/keys/.gitkeep
 secrets.auto.tfvars
 .vscode/
+.vagrant/
