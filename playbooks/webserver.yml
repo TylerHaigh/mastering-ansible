@@ -3,19 +3,11 @@
 - hosts: webserver
   become: true
   tasks:
-    # - name: install httpd
-    #   yum:
-    #     name: 
-    #     state: present
-    #     update_cache: yes
-    #   # notify: restart httpd
-
-
+ 
     # in order to install mod_wsgi, you need to install httpd-devel
-    # i dont think the app is using python34. could possibly be removed...
     - name: install apache
       yum:
-        name: [ "httpd", "httpd-devel", "python34", "python-pip", "gcc", "python-devel", "mysql-devel", "MySQL-python" ]
+        name: [ "httpd", "httpd-devel" ]
         state: present
         update_cache: yes
       notify: restart httpd
@@ -25,6 +17,7 @@
 
     - name: install virtualenv
       pip:
+        executable: pip3
         name: [ "virtualenv", "mod_wsgi" ]
         state: present
 
@@ -58,7 +51,7 @@
 
     - name: copy demo app source
       copy:
-        src: demo/app/ # copy app/ folder with all contents
+        src: ../demo/app/ # copy app/ folder with all contents
         dest: /var/www/demo
         mode: 0755
       notify: restart httpd
@@ -67,24 +60,31 @@
     # for how I generated this config via `mod_wsgi-express module-config`
     - name: copy apache virtual host config
       copy:
-        src: demo/demo.conf
+        src: ../demo/demo.conf
         dest: /etc/httpd/conf.d/
         mode: 0755
       notify: restart httpd
 
-    - name: copy apache wsgi config
-      copy:
-        src: demo/wsgi.conf
-        dest: /etc/httpd/conf.d/
-        mode: 0755
+    # - name: copy apache wsgi config
+    #   copy:
+    #     src: ../demo/wsgi.conf
+    #     dest: /etc/httpd/conf.d/
+    #     mode: 0755
+    #   notify: restart httpd
+
+    - name: get mod_wsgi config for apache module
+      shell: mod_wsgi-express module-config > /etc/httpd/conf.d/wsgi.conf
+      args:
+        creates: /etc/httpd/conf.d/wsgi.conf
       notify: restart httpd
 
 
     - name: setup python virtual environment
       pip:
+        # executable: pip3
         requirements: /var/www/demo/requirements.txt
-        virtualenv:   /var/www/demo/venv27
-        virtualenv_python: python2.7
+        virtualenv:   /var/www/demo/venv34
+        virtualenv_python: python3.4
       notify: restart httpd
 
 

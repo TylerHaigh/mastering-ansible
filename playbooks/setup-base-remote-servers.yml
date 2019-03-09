@@ -7,6 +7,11 @@
     - name: update yum
       command: yum update -y
 
+    - name: Install the libselinux-python package
+      yum:
+        name: libselinux-python
+        state: present
+
     # Install EPEL
     - name: install epel
       yum:
@@ -18,9 +23,10 @@
 
 
     # Install Python
+    # https://stackoverflow.com/a/23317640/2442468
     - name: install python 3.4
       yum:
-        name: [ "python34", "python34-setuptools" ]
+        name: [ "gcc", "python34", "python34-setuptools", "python-setuptools-devel", "python34-devel" ]
         state: present
         update_cache: yes
 
@@ -29,6 +35,13 @@
       easy_install:
         executable: easy_install-3.4
         name: pip
+        state: present
+
+    # Install virtual env
+    - name: install virtual env
+      pip:
+        executable: pip3
+        name: [ "virtualenv", "virtualenvwrapper"]
         state: present
 
 

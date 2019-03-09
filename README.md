@@ -91,3 +91,12 @@ Run the prescribed command to remove it
 ```
 ssh-keygen -f "/home/your_user_name/.ssh/known_hosts" -R "192.168.60.6"
 ```
+
+# SSH Into Vagrant Machine #
+
+Run the following command:
+
+```
+# To ssh into 192.168.60.7 (Load Balancer)
+ssh -i ~/.vagrant.d/insecure_private_key vagrant@192.168.60.7
+```

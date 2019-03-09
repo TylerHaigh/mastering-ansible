@@ -1,5 +1,9 @@
 upstream demo {
-    server ec2-13-236-116-13.ap-southeast-2.compute.amazonaws.com;
+
+{% for server in groups.webserver %}
+    server {{ server }};
+{% endfor %}
+
 }
 
 server {

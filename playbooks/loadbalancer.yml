@@ -1,4 +1,10 @@
 ---
+# https://github.com/ansible/ansible/issues/9260
+- name: get hostvars information
+  hosts: all
+  remote_user: root
+  tasks: []
+
 
 # Load balancer group from dev hosts file
 - hosts: loadbalancer
@@ -36,7 +42,7 @@
 
     - name: configure nginx site
       template:
-        src: templates/nginx.conf.j2
+        src: ../templates/nginx.conf.j2
         dest: /etc/nginx/conf.d/demo.conf
         mode: 0644
       notify: restart nginx
