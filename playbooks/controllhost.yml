@@ -1,0 +1,12 @@
+---
+
+- hosts: control
+  become: yes
+
+  # Control server is ubuntu
+  tasks:
+    - name: install dev tools
+      apt:
+        name: curl
+        state: present
+        update_cache: yes
