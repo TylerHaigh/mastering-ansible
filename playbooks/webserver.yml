@@ -11,6 +11,6 @@
     - include_role:
         name: roles/demo_app
       vars:
-        db_name: demo
-        db_user_name: tyler
-        db_user_password: tylerlocalhost
+        # db_name: demo
+        db_user_name: "{{db_user}}"
+        db_user_password: "{{db_pass}}"

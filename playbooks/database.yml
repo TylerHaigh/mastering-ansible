@@ -6,8 +6,8 @@
     - include_role:
         name: roles/mysql
       vars:
-        db_name: demo
-        db_user_name: demo
-        db_user_password: demo
+        # db_name: demo  # Passed in via group_vars.all
+        db_user_name: "{{db_user}}"
+        db_user_password: "{{db_pass}}"
         db_login_user_name: tyler
         db_login_user_password: tylerlocalhost
