@@ -15,8 +15,8 @@
 - name: download mysql server rpm package
   yum:
     name: https://dev.mysql.com/get/mysql80-community-release-el6-2.noarch.rpm
-    # state: present
-    # update_cache: yes
+    state: present
+    update_cache: yes
 
 - name: confirm rpm package was added
   shell: yum repolist all | grep mysql
@@ -29,11 +29,12 @@
     state: present
     update_cache: yes
 
+# If using vagrant, you need to use eth1, not eth0
 - name: ensure mysql is listening on all ports
   lineinfile:
     dest: /etc/my.cnf
     regexp: ^bind-address
-    line: "bind-address = 0.0.0.0"
+    line: "bind-address = {{ ansible_eth1.ipv4.address }}"
   notify: restart mysql
 
 # Always give the server a chance to reconfigure itself
@@ -66,3 +67,13 @@
 #     login_host: localhost
 #     login_user: tyler
 #     login_password: tylerlocalhost
+
+- name: open firewall ports
+  iptables:
+    chain: INPUT
+    protocol: tcp
+    destination_port: 3306
+    jump: ACCEPT
+    comment: MySQL
+    state: present
+  notify: save iptables

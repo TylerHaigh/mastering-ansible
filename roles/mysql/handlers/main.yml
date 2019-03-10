@@ -5,3 +5,13 @@
   service:
     name: mysqld
     state: restarted
+
+
+- name: save iptables
+  command: service iptables save
+  notify: reload iptables
+
+- name: reload iptables
+  service:
+    name: iptables
+    state: restarted
