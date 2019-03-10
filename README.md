@@ -119,3 +119,17 @@ ansible-galaxy init apache
 ansible-galaxy init demo_app
 ansible-galaxy init mysql
 ```
+
+
+# Sample vscode settings #
+
+```
+{
+  "editor.formatOnSave": true,
+  "files.associations": {
+    "local": "ini",
+    "dev": "ini",
+    "*.wsgi": "python"
+  }
+}
+```
