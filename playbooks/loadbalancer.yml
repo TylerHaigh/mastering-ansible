@@ -1,9 +1,9 @@
 ---
 # https://github.com/ansible/ansible/issues/9260
-- name: get hostvars information
-  hosts: all
-  remote_user: root
-  tasks: []
+# - name: get hostvars information
+#   hosts: all
+#   remote_user: root
+#   tasks: []
 
 
 # Load balancer group from dev hosts file
@@ -11,6 +11,7 @@
 
   # Escalate permissions to use root
   become: yes
+  gather_facts: false
 
   tasks:
     - include_role:

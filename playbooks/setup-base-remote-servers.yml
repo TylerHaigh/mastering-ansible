@@ -2,10 +2,11 @@
 
 - hosts: loadbalancer, webserver, database
   become: yes
+  gather_facts: false
 
   roles:
     - { role: roles/epel }
-  
+
   tasks:
     - name: update yum
       command: yum update -y
@@ -17,6 +18,7 @@
         update_cache: yes
 
 - hosts: loadbalancer
+  gather_facts: false
   tasks:
     - name: put server name into file
       shell: echo 'Load Balancer' > ~/LoadBalancer.txt
@@ -24,6 +26,7 @@
         creates: ~/LoadBalancer.txt
 
 - hosts: webserver
+  gather_facts: false
   tasks:
     - name: put server name into file
       shell: echo 'Web Server' > ~/WebServer.txt
@@ -31,6 +34,7 @@
         creates: ~/WebServer.txt
 
 - hosts: database
+  gather_facts: false
   tasks:
     - name: put server name into file
       shell: echo 'Database' > ~/Database.txt

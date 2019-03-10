@@ -2,6 +2,7 @@
 
 - hosts: control
   become: yes
+  gather_facts: false
 
   # Control server is ubuntu
 

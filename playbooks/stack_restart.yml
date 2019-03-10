@@ -4,12 +4,14 @@
 
 - hosts: loadbalancer
   become: yes
+  gather_facts: false
   tasks:
     - service: name=nginx state=stopped
     - wait_for: port=80    state=drained
     # - wait_for: port=8080  state=drained
 
 - hosts: webserver
+  gather_facts: false
   become: yes
   tasks:
     - service: name=httpd state=stopped
@@ -27,12 +29,14 @@
 # Bring rest of stack back up
 
 - hosts: webserver
+  gather_facts: false
   become: yes
   tasks:
     - service: name=httpd state=started
     - wait_for: port=80    state=started
 
 - hosts: loadbalancer
+  gather_facts: false
   become: yes
   tasks:
     - service: name=nginx state=started

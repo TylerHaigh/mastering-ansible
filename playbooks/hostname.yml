@@ -2,6 +2,7 @@
 
   # Sets the target for the playbook
   - hosts: all
+    gather_facts: false
     tasks:
       - name: ping all hosts
         ping:

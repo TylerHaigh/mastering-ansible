@@ -2,6 +2,7 @@
 
 - hosts: loadbalancer
   become: true
+  gather_facts: false
   tasks:
     # Returns non-0 exit code if not running
     - name: verify nginx status
@@ -16,6 +17,7 @@
 
 
 - hosts: webserver
+  gather_facts: false
   become: true
   tasks:
     - name: verify httpd status
@@ -36,7 +38,9 @@
       wait_for: host={{ ansible_eth1.ipv4.address }} port=3306 timeout=1
 
 
+
 - hosts: control
+  gather_facts: false
   tasks:
     - name: verify end-to-end response
       uri:
@@ -71,7 +75,10 @@
       when: "'Database Connected from' not in item.content"
       with_items: "{{lb_index.results}}"
 
+
+
 - hosts: loadbalancer
+  gather_facts: false
   tasks:
     - name: verify backend response
       uri:
