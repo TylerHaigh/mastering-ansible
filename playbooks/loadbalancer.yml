@@ -20,5 +20,5 @@
       vars:
         sites:
           demo:
-            frontend_port: 8080
+            frontend_port: 80
             backend_port: 80

@@ -10,8 +10,8 @@
     - name: verify nginx is listening on port 80
       wait_for: port=80 timeout=1
 
-    - name: verify nginx is listening on port 8080
-      wait_for: port=8080 timeout=1
+    # - name: verify nginx is listening on port 8080
+    #   wait_for: port=8080 timeout=1
 
 
 
@@ -40,16 +40,15 @@
   tasks:
     - name: verify end-to-end response
       uri:
-        url: http://{{item}}:8080/demo
+        url: http://{{item}}/demo
         return_content: yes
-      # with_items: "{{groups['loadbalancer']}}"
       with_items: "{{groups.loadbalancer}}"
       register: lb_index
 
     - debug:
         msg: "Response: {{item.content}}"
       with_items: "{{lb_index.results}}"
-    
+
     - fail:
         msg: index failed to return content
       when: "'Hello, from sunny' not in item.content"
@@ -58,12 +57,11 @@
 
     - name: verify end-to-end response
       uri:
-        url: http://{{item}}:8080/demo/db
+        url: http://{{item}}/demo/db
         return_content: yes
-      # with_items: "{{groups['loadbalancer']}}"
       with_items: "{{groups.loadbalancer}}"
       register: lb_index
-    
+
     - debug:
         msg: "Response: {{item.content}}"
       with_items: "{{lb_index.results}}"
@@ -81,7 +79,7 @@
         return_content: yes
       with_items: "{{groups.webserver}}"
       register: app_index
-    
+
     - debug:
         msg: "Response: {{item.content}}"
       with_items: "{{app_index.results}}"
@@ -102,7 +100,7 @@
     - debug:
         msg: "Response: {{item.content}}"
       with_items: "{{app_index.results}}"
-    
+
     - fail:
         msg: index failed to return content
       when: "'Database Connected from' not in item.content"
