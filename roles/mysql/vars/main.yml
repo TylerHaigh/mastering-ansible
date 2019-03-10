@@ -1,2 +1,4 @@
 ---
 # vars file for mysql
+# anti pattern to define vars in a role
+# since roles should be generic

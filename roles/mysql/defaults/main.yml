@@ -1,2 +1,13 @@
 ---
 # defaults file for mysql
+
+# Details for dedicated db user role
+db_name: myapp
+db_user_name: dbuser
+db_user_password: dbpass
+db_user_host: "%"
+
+# DB User who will create the database through ansible
+db_login_user_name: root
+db_login_user_password: root_password
+db_login_host: localhost

@@ -2,7 +2,12 @@
 
 - hosts: database
   become: true
-  roles:
-    # - { role: roles/epel }
-    # - { role: roles/python }
-    - { role: roles/mysql }
+  tasks:
+    - include_role:
+        name: roles/mysql
+      vars:
+        db_name: demo
+        db_user_name: demo
+        db_user_password: demo
+        db_login_user_name: tyler
+        db_login_user_password: tylerlocalhost
