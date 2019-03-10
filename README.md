@@ -133,3 +133,28 @@ ansible-galaxy init mysql
   }
 }
 ```
+
+
+# Ansible Vault #
+
+If required, tell ansible to use VI as the ansible vault editor
+
+```
+export EDITOR=vi
+```
+
+Steps to create an ansible vault
+
+1. Run the following command
+  ```
+  ansible-vault create vault
+  > Vault password: ****
+  ```
+2. Enter the vault encrypted key-value-pair
+  ```
+  vault_db_password: tylerlocalhost
+  ```
+3. Reference the `vault_db_password` from the `group_vars/all/vars` file
+  ```
+  db_pass: "{{ vault_db_password }}"
+  ```
