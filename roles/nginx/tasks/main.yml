@@ -25,6 +25,17 @@
     name: libselinux-python
     state: present
 
+- name: get active sites
+  shell: ls -1 /etc/nginx/conf.d | sed -e 's/\..*$//'
+  register: active_sites
+
+- name: delete active sites
+  file:
+    path: /etc/nginx/conf.d/{{ item }}
+    state: absent
+  with_items: "{{ active_sites.stdout_lines }}"
+  when: item not in sites
+  notify: restart nginx
 
 - name: configure nginx site
   template:
