@@ -6,7 +6,7 @@ exec(compile(open(activate_this, "rb").read(), activate_this, 'exec'), dict(__fi
 
 
 import os
-os.environ['DATABASE_URI'] = 'mysql://tyler:tylerlocalhost@192.168.60.6/demo'
+os.environ['DATABASE_URI'] = 'mysql://{{db_user_name}}:{{db_user_password}}@{{groups.database[0]}}/{{db_name}}'
 
 import sys
 sys.path.insert(0, '/var/www/demo')

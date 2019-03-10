@@ -30,8 +30,14 @@
     mode: 0755
   notify: restart httpd
 
-# see https://github.com/GrahamDumpleton/mod_wsgi
-# for how I generated this config via `mod_wsgi-express module-config`
+- name: copy demo wsgi template
+  template:
+    src: demo.wsgi.j2
+    dest: /var/www/demo/demo.wsgi
+    mode: 0755
+  notify: restart httpd
+
+
 - name: copy apache virtual host config
   copy:
     src: demo/demo.conf
@@ -39,13 +45,9 @@
     mode: 0755
   notify: restart httpd
 
-# - name: copy apache wsgi config
-#   copy:
-#     src: demo/wsgi.conf
-#     dest: /etc/httpd/conf.d/
-#     mode: 0755
-#   notify: restart httpd
 
+# see https://github.com/GrahamDumpleton/mod_wsgi
+# for how I generated this config via `mod_wsgi-express module-config`
 - name: get mod_wsgi config for apache module
   shell: mod_wsgi-express module-config > /etc/httpd/conf.d/wsgi.conf
   args:

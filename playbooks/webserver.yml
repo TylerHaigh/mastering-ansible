@@ -6,4 +6,11 @@
     - { role: roles/epel }
     - { role: roles/python }
     - { role: roles/apache }
-    - { role: roles/demo_app }
+
+  tasks:
+    - include_role:
+        name: roles/demo_app
+      vars:
+        db_name: demo
+        db_user_name: tyler
+        db_user_password: tylerlocalhost
