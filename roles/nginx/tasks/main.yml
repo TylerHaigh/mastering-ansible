@@ -30,6 +30,7 @@
 - name: get active sites
   shell: ls -1 /etc/nginx/conf.d | sed -e 's/\..*$//'
   register: active_sites
+  changed_when: "active_sites.stdout_lines != sites.keys()"
   tags: [ 'config', 'services' ]
 
 - name: delete active sites
