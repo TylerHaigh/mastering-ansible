@@ -1,6 +1,11 @@
 ---
 # tasks file for mysql
 
+- name: Install the libselinux-python package
+  yum:
+    name: libselinux-python
+    state: present
+
 - name: install tools
   yum:
     name: MySQL-python
@@ -10,11 +15,11 @@
 - name: download mysql server rpm package
   yum:
     name: https://dev.mysql.com/get/mysql80-community-release-el6-2.noarch.rpm
-    state: present
-    update_cache: yes
+    # state: present
+    # update_cache: yes
 
 - name: confirm rpm package was added
-  command: yum repolist all | grep mysql
+  shell: yum repolist all | grep mysql
 
 
 # installs mysqld, mysql, mysqldump

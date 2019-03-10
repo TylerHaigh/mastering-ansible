@@ -1,7 +1,6 @@
 ---
 # tasks file for nginx
 
-
 - name: install nginx
 
   # https://docs.ansible.com/ansible/latest/modules/yum_module.html
@@ -19,6 +18,12 @@
     # Force yum to check if cache is out of date and redownload if needed.
     # Has an effect only if state is present or latest.
     update_cache: yes
+
+
+- name: Install the libselinux-python package
+  yum:
+    name: libselinux-python
+    state: present
 
 
 - name: configure nginx site

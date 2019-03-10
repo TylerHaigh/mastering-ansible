@@ -1,2 +1,39 @@
 ---
 # tasks file for apache
+
+
+# in order to install mod_wsgi, you need to install httpd-devel
+- name: install apache
+  yum:
+    name: [ "httpd", "httpd-devel" ]
+    state: present
+    update_cache: yes
+  notify: restart httpd
+
+
+- name: open firewall ports
+  iptables:
+    chain: INPUT
+    protocol: tcp
+    destination_port: 80
+    jump: ACCEPT
+    comment: Apache HTTPD HTTP 80
+    state: present
+  notify: save iptables
+
+
+- name: open firewall ports
+  iptables:
+    chain: INPUT
+    protocol: tcp
+    destination_port: 443
+    jump: ACCEPT
+    comment: Apache HTTPD HTTPS 443
+    state: present
+  notify: save iptables
+
+- name: ensure httpd is running
+  service:
+    name: httpd
+    state: started
+    enabled: yes  

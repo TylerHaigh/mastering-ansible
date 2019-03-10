@@ -1,2 +1,17 @@
 ---
 # handlers file for apache
+
+
+- name: restart httpd
+  service:
+    name: httpd
+    state: restarted
+
+- name: save iptables
+  command: service iptables save
+  notify: reload iptables
+
+- name: reload iptables
+  service:
+    name: iptables
+    state: restarted

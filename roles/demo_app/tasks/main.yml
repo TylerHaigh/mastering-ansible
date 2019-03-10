@@ -1,2 +1,62 @@
 ---
 # tasks file for demo_app
+
+- name: install mysql tools globally
+  yum:
+    name: [ "mysql-devel", "MySQL-python"]
+    state: present
+    update_cache: yes
+
+  # need to install mod_wsgi via pip because the one that comes by default with yum is python 2.6
+  # which doesn't support dist comprehension (you'll get an invalid syntax from some command within the Flask module)
+
+- name: install pip packages globally
+  pip:
+    executable: pip3
+    name: [ "mod_wsgi", "mysqlclient", "pymysql", "cryptography" ]
+    state: present
+
+# https://stackoverflow.com/a/22693233/2442468
+- name: allow apache mod_wsgi to connect to databases
+  shell: setenforce 0 && setsebool -P httpd_can_network_connect_db 1 && echo done > /opt/mod_wsgi_enabled
+  args:
+    creates: /opt/mod_wsgi_enabled
+  notify: restart httpd
+
+- name: copy demo app source
+  copy:
+    src: demo/app/ # copy app/ folder with all contents
+    dest: /var/www/demo
+    mode: 0755
+  notify: restart httpd
+
+# see https://github.com/GrahamDumpleton/mod_wsgi
+# for how I generated this config via `mod_wsgi-express module-config`
+- name: copy apache virtual host config
+  copy:
+    src: demo/demo.conf
+    dest: /etc/httpd/conf.d/
+    mode: 0755
+  notify: restart httpd
+
+# - name: copy apache wsgi config
+#   copy:
+#     src: demo/wsgi.conf
+#     dest: /etc/httpd/conf.d/
+#     mode: 0755
+#   notify: restart httpd
+
+- name: get mod_wsgi config for apache module
+  shell: mod_wsgi-express module-config > /etc/httpd/conf.d/wsgi.conf
+  args:
+    creates: /etc/httpd/conf.d/wsgi.conf
+  notify: restart httpd
+
+
+- name: setup python virtual environment
+  pip:
+    # executable: pip3
+    requirements: /var/www/demo/requirements.txt
+    virtualenv:   /var/www/demo/venv34
+    virtualenv_python: python3.4
+  notify: restart httpd

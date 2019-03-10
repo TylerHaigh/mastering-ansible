@@ -1,0 +1,11 @@
+---
+# tasks file for epel
+
+# Install EPEL
+- name: install epel
+  yum:
+    name: epel-release
+    state: present
+
+- name: enable epel repo
+  shell: yum-config-manager --enable epel

@@ -3,4 +3,6 @@
 - hosts: database
   become: true
   roles:
+    # - { role: roles/epel }
+    # - { role: roles/python }
     - { role: roles/mysql }
