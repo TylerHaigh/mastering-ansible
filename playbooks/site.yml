@@ -1,0 +1,6 @@
+---
+- include: setup-base-remote-servers.yml
+- include: database.yml
+- include: webserver.yml
+- include: loadbalancer.yml
+- include: stack-status.yml
