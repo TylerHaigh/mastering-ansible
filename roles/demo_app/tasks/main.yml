@@ -6,6 +6,8 @@
     name: [ "mysql-devel", "MySQL-python"]
     state: present
     update_cache: yes
+  tags: [ 'packages' ]
+
 
   # need to install mod_wsgi via pip because the one that comes by default with yum is python 2.6
   # which doesn't support dist comprehension (you'll get an invalid syntax from some command within the Flask module)
@@ -15,6 +17,7 @@
     executable: pip3
     name: [ "mod_wsgi", "mysqlclient", "pymysql", "cryptography" ]
     state: present
+  tags: [ 'packages' ]
 
 # https://stackoverflow.com/a/22693233/2442468
 - name: allow apache mod_wsgi to connect to databases
@@ -22,6 +25,7 @@
   args:
     creates: /opt/mod_wsgi_enabled
   notify: restart httpd
+  tags: [ 'config', 'services' ]
 
 - name: copy demo app source
   copy:
@@ -29,6 +33,7 @@
     dest: /var/www/demo
     mode: 0755
   notify: restart httpd
+  tags: [ 'application' ]
 
 - name: copy demo wsgi template
   template:
@@ -36,6 +41,7 @@
     dest: /var/www/demo/demo.wsgi
     mode: 0755
   notify: restart httpd
+  tags: [ 'config' ]
 
 
 - name: copy apache virtual host config
@@ -44,6 +50,7 @@
     dest: /etc/httpd/conf.d/
     mode: 0755
   notify: restart httpd
+  tags: [ 'application', 'config' ]
 
 
 # see https://github.com/GrahamDumpleton/mod_wsgi
@@ -53,6 +60,7 @@
   args:
     creates: /etc/httpd/conf.d/wsgi.conf
   notify: restart httpd
+  tags: [ 'config', 'services' ]
 
 
 - name: setup python virtual environment
@@ -62,3 +70,4 @@
     virtualenv:   /var/www/demo/venv34
     virtualenv_python: python3.4
   notify: restart httpd
+  tags: [ 'application' ]

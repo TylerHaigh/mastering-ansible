@@ -9,6 +9,7 @@
     state: present
     update_cache: yes
   notify: restart httpd
+  tags: [ 'packages' ]
 
 
 - name: open firewall ports
@@ -20,6 +21,7 @@
     comment: Apache HTTPD HTTP 80
     state: present
   notify: save iptables
+  tags: [ 'config', 'services' ]
 
 
 - name: open firewall ports
@@ -31,9 +33,11 @@
     comment: Apache HTTPD HTTPS 443
     state: present
   notify: save iptables
+  tags: [ 'config', 'services' ]
 
 - name: ensure httpd is running
   service:
     name: httpd
     state: started
-    enabled: yes  
+    enabled: yes
+  tags: [ 'services' ]

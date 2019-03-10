@@ -5,21 +5,25 @@
   yum:
     name: libselinux-python
     state: present
+  tags: [ 'packages' ]
 
 - name: install tools
   yum:
     name: MySQL-python
     state: present
     update_cache: yes
+  tags: [ 'packages' ]
 
 - name: download mysql server rpm package
   yum:
     name: https://dev.mysql.com/get/mysql80-community-release-el6-2.noarch.rpm
     state: present
     update_cache: yes
+  tags: [ 'packages' ]
 
 - name: confirm rpm package was added
   shell: yum repolist all | grep mysql
+  tags: [ 'packages' ]
 
 
 # installs mysqld, mysql, mysqldump
@@ -28,6 +32,7 @@
     name: mysql-community-server
     state: present
     update_cache: yes
+  tags: [ 'packages' ]
 
 # If using vagrant, you need to use eth1, not eth0
 - name: ensure mysql is listening on all ports
@@ -36,6 +41,7 @@
     regexp: ^bind-address
     line: "bind-address = {{ ansible_eth1.ipv4.address }}"
   notify: restart mysql
+  tags: [ 'config', 'services' ]
 
 # Always give the server a chance to reconfigure itself
 # before restarting
@@ -44,6 +50,7 @@
     name: mysqld
     state: started
     enabled: yes
+  tags: [ 'services' ]
 
 # at this point, you need to manually log into the server and run the commands listed in ../utils/mysql-commands.sh
 # to change the root mysql password
@@ -55,6 +62,8 @@
     login_host: "{{ db_login_host }}"
     login_user: "{{ db_login_user_name }}"
     login_password: "{{ db_login_user_password }}"
+  tags: [ 'services', 'application' ]
+
 
 # Broken: https://github.com/ansible/ansible/pull/52278
 # - name: create demo database user
@@ -77,3 +86,4 @@
     comment: MySQL
     state: present
   notify: save iptables
+  tags: [ 'services', 'config' ]

@@ -10,12 +10,14 @@
   tasks:
     - name: update yum
       command: yum update -y
+      tags: [ 'packages' ]
 
     - name: install banner
       yum:
         name: figlet
         state: present
         update_cache: yes
+      tags: [ 'packages' ]
 
 - hosts: loadbalancer
   gather_facts: false
@@ -24,6 +26,8 @@
       shell: echo 'Load Balancer' > ~/LoadBalancer.txt
       args:
         creates: ~/LoadBalancer.txt
+      tags: [ 'config' ]
+
 
 - hosts: webserver
   gather_facts: false
@@ -32,6 +36,7 @@
       shell: echo 'Web Server' > ~/WebServer.txt
       args:
         creates: ~/WebServer.txt
+      tags: [ 'config' ]
 
 - hosts: database
   gather_facts: false
@@ -40,3 +45,4 @@
       shell: echo 'Database' > ~/Database.txt
       args:
         creates: ~/Database.txt
+      tags: [ 'config' ]

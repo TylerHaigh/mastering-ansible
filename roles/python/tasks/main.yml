@@ -5,6 +5,7 @@
   yum:
     name: libselinux-python
     state: present
+  tags: [ 'packages' ]
 
 # Install Python
 # https://stackoverflow.com/a/23317640/2442468
@@ -13,6 +14,7 @@
     name: [ "gcc", "python34", "python34-setuptools", "python-setuptools-devel", "python34-devel" ]
     state: present
     update_cache: yes
+  tags: [ 'packages' ]
 
 # Install Pip
 - name: install pip
@@ -20,6 +22,7 @@
     executable: easy_install-3.4
     name: pip
     state: present
+  tags: [ 'packages' ]
 
 # Install virtual env
 - name: install virtual env
@@ -27,3 +30,4 @@
     executable: pip3
     name: [ "virtualenv", "virtualenvwrapper"]
     state: present
+  tags: [ 'packages' ]

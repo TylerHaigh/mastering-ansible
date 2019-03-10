@@ -158,3 +158,10 @@ Steps to create an ansible vault
   ```
   db_pass: "{{ vault_db_password }}"
   ```
+
+# Tagging
+
+* Packages
+* Services
+* Config
+* Application

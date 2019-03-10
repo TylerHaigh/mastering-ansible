@@ -18,16 +18,19 @@
     # Force yum to check if cache is out of date and redownload if needed.
     # Has an effect only if state is present or latest.
     update_cache: yes
+  tags: [ 'packages' ]
 
 
 - name: Install the libselinux-python package
   yum:
     name: libselinux-python
     state: present
+  tags: [ 'packages' ]
 
 - name: get active sites
   shell: ls -1 /etc/nginx/conf.d | sed -e 's/\..*$//'
   register: active_sites
+  tags: [ 'config', 'services' ]
 
 - name: delete active sites
   file:
@@ -36,6 +39,7 @@
   with_items: "{{ active_sites.stdout_lines }}"
   when: item not in sites
   notify: restart nginx
+  tags: [ 'config', 'services' ]
 
 - name: configure nginx site
   template:
@@ -44,6 +48,7 @@
     mode: 0644
   with_dict: "{{ sites }}"
   notify: restart nginx
+  tags: [ 'config', 'services', 'application' ]
 
 
 # Give Ansible a chance to update the config
@@ -53,3 +58,4 @@
     name: nginx
     state: started
     enabled: yes # Whether the service should start on boot
+  tags: [ 'services' ]
