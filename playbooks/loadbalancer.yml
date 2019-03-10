@@ -12,6 +12,13 @@
   # Escalate permissions to use root
   become: yes
 
-  roles:
-    - { role: roles/epel }
-    - { role: roles/nginx }
+  tasks:
+    - include_role:
+        name: roles/epel
+    - include_role:
+        name: roles/nginx
+      vars:
+        sites:
+          demo:
+            frontend_port: 8080
+            backend_port: 80
